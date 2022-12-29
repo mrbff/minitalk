@@ -60,7 +60,7 @@ clean:
 
 fclean:			clean
 				@ $(RM) $(SE_NAME) $(CL_NAME) $(LIBFT)
-				@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binaries✔️"
+				@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binaries ✔️"
 
 re:				fclean all
 
