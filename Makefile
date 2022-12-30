@@ -7,8 +7,10 @@ CL_NAME			:=	client
 SRCS_DIR		:=	./srcs/
 
 SE_FILES		:=	server.c \
+				printbits.c \
 
 CL_FILES		:=	client.c \
+				printbits.c \
 
 SE_SRCS			:= 	$(addprefix $(SRCS_DIR), $(SE_FILES))
 

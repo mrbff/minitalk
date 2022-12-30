@@ -1,55 +1,13 @@
-#include <signal.h>
-#include <sys/types.h>
-#include "../libft/libft.h"
-#include <stdio.h>
+#include "../minitalk.h"
 
-char	*mex;
-
-typedef struct s_md
+void	ft_finish(t_clpid *pcpid)
 {
-	size_t	dim;
-	int	count;
-}	t_md;
-
-void	ft_finish(t_md *pmd)
-{
-	pmd->dim = 0;
-	pmd->count = 0;
-//	if (mex != NULL)
-//		free(mex);
-	//kill client
+	kill(pcpid->pid, SIGUSR1);
+	pcpid->count = 0;
+	pcpid->pid = 0;
 }
 
-void	ft_addLastByte(int c, t_md *pmd)
-{
-	static	size_t	nbytes;
-
-	if (!mex || mex == NULL)
-	{
-		if (pmd->dim > 0)
-			mex = malloc(pmd->dim);
-		else
-			mex = malloc(1);
-		if (!mex)
-			return ;
-	}
-	if (nbytes < pmd->dim - 1)
-	{
-		mex[nbytes] = c;
-		nbytes++;
-	}
-	else
-	{
-		mex[nbytes] = c;
-		printf("\ndim: %lu\n", pmd->dim);///
-		write(1, mex, pmd->dim);
-		//printf("%s\n", mex);
-		nbytes = 0;
-		ft_finish(pmd);
-	}
-}
-
-void	ft_receiveChar(int sig, t_md *pmd)
+void	ft_receiveChar(int sig, t_clpid *pcpid)
 {
 	static int	nbits;
 	static int	c;
@@ -62,28 +20,30 @@ void	ft_receiveChar(int sig, t_md *pmd)
 	else
 	{
                 c += (sig == SIGUSR1) << nbits;
-		ft_addLastByte(c, pmd);
+		if (c)		
+			write(1, &c, 1);
+		else
+			ft_finish(pcpid);
 		nbits = 0;
-		c = 0;
+                c = 0;
 	}
 }
 
 void	ft_handler(int sig)
 {
-	static t_md	md;
+	static t_clpid	cpid;
 
-	if (md.count > (int)(sizeof(size_t) * 8) - 1)
-		ft_receiveChar(sig, &md);
-	else if (md.count < (int)(sizeof(size_t) * 8) - 1)
+	if (cpid.count > (int)(sizeof(int) * 8) - 1)
+		ft_receiveChar(sig, &cpid);
+	else if (cpid.count < (int)(sizeof(int) * 8) - 1)
 	{
-		md.dim += (sig == SIGUSR1) << md.count;
-		md.count++;
+		cpid.pid += (sig == SIGUSR1) << cpid.count;
+		cpid.count++;
 	}
 	else
 	{
-		md.dim += (sig == SIGUSR1) << md.count;
-///		printf("\ndim: %lu\n", md.dim);///
-		md.count++;
+		cpid.pid += (sig == SIGUSR1) << cpid.count;
+		cpid.count++;
 	}
 }
 
