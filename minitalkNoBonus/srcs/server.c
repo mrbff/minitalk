@@ -50,6 +50,6 @@ int main()
 	signal(SIGUSR1, ft_receiver);
 	signal(SIGUSR2, ft_receiver);
 	while (1)
-		usleep(1);
+		pause();//usleep(1);
 	return (0);
 }

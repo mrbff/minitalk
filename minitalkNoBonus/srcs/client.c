@@ -14,7 +14,7 @@ void	ft_sendChar(int pid_receiver, unsigned char c)
                 if (c)
 			c /= 2;
                 i++;
-                usleep(1);
+		usleep(100);
         }
 }
 /*
@@ -61,7 +61,7 @@ int	main(int ac, char **av)
 	{
 		ft_sendChar(serverpid, av[2][i]);
 		i++;
-		usleep(1);
+//		usleep(10);
 	}
 //	ft_sendChar(serverpid, 0);
 //	pause();

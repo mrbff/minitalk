@@ -14,7 +14,7 @@ void	ft_sendChar(int pid_receiver, unsigned char c)
                 if (c)
 			c /= 2;
                 i++;
-                usleep(1);
+                usleep(100);
         }
 }
 
@@ -32,18 +32,17 @@ void	ft_sendPid(int pid_receiver, int pid_to_send)
                 if (pid_to_send)
                         pid_to_send /= 2;
 		i++;
-                usleep(1);
+                usleep(100);
         }
 }
-
+/*
 void    ft_exit(int sig)
 {
 	(void)sig;
-	write(1, "Message was sent correctly!", 27);
-	sleep(1);
+	write(1, "The message was sent successfully!", 35);
 	exit(0);
 }
-
+*/
 int	main(int ac, char **av)
 {
 	int	i;
@@ -52,7 +51,7 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 		return (ft_printf("Wrong number of arguments.\n"));
-	signal(SIGUSR1, ft_exit);
+	signal(SIGUSR1, exit);
 	serverpid = ft_atoi(av[1]);
 	cpid = getpid();
 	ft_sendPid(serverpid, cpid);
@@ -61,9 +60,9 @@ int	main(int ac, char **av)
 	{
 		ft_sendChar(serverpid, av[2][i]);
 		i++;
-		usleep(1);
 	}
 	ft_sendChar(serverpid, 0);
-	pause();
+	while(1)
+		usleep(1);
 	return (0);
 }

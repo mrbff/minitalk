@@ -53,6 +53,7 @@ int main()
 	signal(SIGUSR1, ft_handler);
 	signal(SIGUSR2, ft_handler);
 	while (1)
-		usleep(1);
+		pause();
+//		usleep(1);
 	return (0);
 }
