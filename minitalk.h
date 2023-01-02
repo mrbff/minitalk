@@ -1,22 +1,26 @@
-#ifndef MINITALK_H
-#define MINITALK_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mabaffo <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/02 20:10:57 by mabaffo           #+#    #+#             */
+/*   Updated: 2023/01/02 20:14:53 by mabaffo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <signal.h>
-#include <sys/types.h>
-#include "libft/libft.h"
+#ifndef MINITALK_H
+# define MINITALK_H
+# include <signal.h>
+# include <sys/types.h>
+# include "libft/libft.h"
 
 typedef struct s_clpid
 {
-        int	pid;
-        int	count;
+	int	pid;
+	int	count;
 
-}       t_clpid;
-
-void    f_printbits(unsigned char c);
-void    f_printbytes(char *s);
+}	t_clpid;
 
 #endif
-/*
- * f_printbits and f_printbytes
- * are just for debugging purpose
- */

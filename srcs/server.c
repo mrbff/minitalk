@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mabaffo <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/02 19:43:48 by mabaffo           #+#    #+#             */
+/*   Updated: 2023/01/02 20:08:55 by mabaffo          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minitalk.h"
 
 void	ft_finish(t_clpid *pcpid)
@@ -7,11 +19,11 @@ void	ft_finish(t_clpid *pcpid)
 	pcpid->pid = 0;
 }
 
-void	ft_receiveChar(int sig, t_clpid *pcpid)
+void	ft_receive_char(int sig, t_clpid *pcpid)
 {
 	static int	nbits;
 	static int	c;
-	
+
 	if (nbits < 7)
 	{
 		c += (sig == SIGUSR1) << nbits;
@@ -19,13 +31,13 @@ void	ft_receiveChar(int sig, t_clpid *pcpid)
 	}
 	else
 	{
-                c += (sig == SIGUSR1) << nbits;
-		if (c)		
+		c += (sig == SIGUSR1) << nbits;
+		if (c)
 			write(1, &c, 1);
 		else
 			ft_finish(pcpid);
 		nbits = 0;
-                c = 0;
+		c = 0;
 	}
 }
 
@@ -34,12 +46,7 @@ void	ft_handler(int sig)
 	static t_clpid	cpid;
 
 	if (cpid.count > (int)(sizeof(int) * 8) - 1)
-		ft_receiveChar(sig, &cpid);
-	else if (cpid.count < (int)(sizeof(int) * 8) - 1)
-	{
-		cpid.pid += (sig == SIGUSR1) << cpid.count;
-		cpid.count++;
-	}
+		ft_receive_char(sig, &cpid);
 	else
 	{
 		cpid.pid += (sig == SIGUSR1) << cpid.count;
@@ -47,13 +54,13 @@ void	ft_handler(int sig)
 	}
 }
 
-int main()
+int	main(void)
 {
 	ft_printf("PID: %i\n", getpid());
-	signal(SIGUSR1, ft_handler);
-	signal(SIGUSR2, ft_handler);
 	while (1)
-		pause();
-//		usleep(1);
+	{
+		signal(SIGUSR1, ft_handler);
+		signal(SIGUSR2, ft_handler);
+	}
 	return (0);
 }
